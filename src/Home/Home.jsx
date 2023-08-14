@@ -6,6 +6,7 @@ const Home = () => {
   const [participantNo, setParticipantNo] = useState("");
   const [participateAt, setParticipateAt] = useState("");
   const [score, setScore] = useState("");
+  const [allPlayer, setAllPlayer] = useState([]);
 
   //generate id
   function generateProductId(currentId) {
@@ -22,13 +23,15 @@ const Home = () => {
     e.preventDefault();
     const participantId = handleGenerateId();
     // Do something with the form data, e.g., send it to a server or perform validation
-    console.log({
+    const data = {
       participantId,
       participantName,
       participantNo,
       participateAt,
       score,
-    });
+    };
+
+    setAllPlayer(...allPlayer, data);
 
     // Clear the form fields
 
@@ -37,6 +40,7 @@ const Home = () => {
     setParticipateAt("");
     setScore("");
   };
+  console.log(allPlayer, "line 35");
   return (
     <div>
       <h2>Participant Details</h2>
