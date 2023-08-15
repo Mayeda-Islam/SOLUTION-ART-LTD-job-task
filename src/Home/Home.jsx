@@ -2,15 +2,34 @@ import React, { useState } from "react";
 import PlayerCard from "./PlayerCard";
 
 const Home = () => {
+  const [editIndex, setEditIndex] = useState(null);
   const [currentId, setCurrentId] = useState(1);
   const [participantName, setParticipantName] = useState("");
   const [participantNo, setParticipantNo] = useState("");
   const [participateAt, setParticipateAt] = useState("");
   const [score, setScore] = useState("");
+  const [error, setError] = useState("");
   const [allPlayer, setAllPlayer] = useState([]);
 
-  const handleUpdate = (id) => {
-    console.log(id, "from update");
+  const handleUpdate = (updatedPlayer) => {
+    console.log(updatedPlayer);
+    const updatedIndex = allPlayer?.findIndex(
+      (player) => player?.participantId === updatedPlayer?.participantId
+    );
+    if (updatedIndex !== -1) {
+      // const updatedPlayer = allPlayer[updatedIndex];
+      //updated player data added
+      // (updatedPlayer.participantName = updatedPlayer?.participantName),
+      //   (updatedPlayer.participateAt = "fgfh"),
+      //   (updatedPlayer.score = 3),
+      //   (updatedPlayer.participantNo = "sgdfhgfgh");
+      // console.log(updatedPlayer);
+      //updated data replace
+      const updatedPlayers = [...allPlayer];
+      updatedPlayers[updatedIndex] = updatedPlayer;
+      setAllPlayer(updatedPlayers);
+    }
+    setEditIndex(null);
   };
   const handleDelete = (id) => {
     const filteringPlayer = allPlayer?.filter(
@@ -74,18 +93,22 @@ const Home = () => {
           <br />
           <label>
             Participate On:
-            <input
-              type="text"
+            <select
               value={participantNo}
               onChange={(e) => setParticipantNo(e.target.value)}
-              required
-            />
+            >
+              <option value="">Select an activity</option>
+              <option value="cricket">Cricket</option>
+              <option value="football">Football</option>
+              <option value="racing car">Racing Car</option>
+              <option value="bike racing">Bike Racing</option>
+            </select>
           </label>
           <br />
           <label>
             Participate At:
             <input
-              type="text"
+              type="date"
               value={participateAt}
               onChange={(e) => setParticipateAt(e.target.value)}
               required
@@ -95,6 +118,8 @@ const Home = () => {
           <label>
             Score:
             <input
+              min="0"
+              max="10"
               type="number"
               value={score}
               onChange={(e) => setScore(e.target.value)}
@@ -106,6 +131,9 @@ const Home = () => {
         </form>
       </div>
       <PlayerCard
+        setParticipantName={setParticipantName}
+        editIndex={editIndex}
+        setEditIndex={setEditIndex}
         handleDelete={handleDelete}
         handleUpdate={handleUpdate}
         allPlayer={allPlayer}
