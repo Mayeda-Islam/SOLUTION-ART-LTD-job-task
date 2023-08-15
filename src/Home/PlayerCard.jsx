@@ -84,7 +84,22 @@ const PlayerCard = ({
                   player?.participantName
                 )}
               </td>
-
+              <td>
+                {editIndex === index ? (
+                  <input
+                    type="date"
+                    value={updatedPlayer?.participantNo}
+                    onChange={(e) =>
+                      setUpdatedPlayer({
+                        ...updatedPlayer,
+                        participantNo: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player?.participantNo
+                )}
+              </td>
               <td>
                 {editIndex === index ? (
                   <select
@@ -106,22 +121,7 @@ const PlayerCard = ({
                   player?.participateAt
                 )}
               </td>
-              <td>
-                {editIndex === index ? (
-                  <input
-                    type="date"
-                    value={updatedPlayer?.participantAt}
-                    onChange={(e) =>
-                      setUpdatedPlayer({
-                        ...updatedPlayer,
-                        participantNo: e.target.value,
-                      })
-                    }
-                  />
-                ) : (
-                  player?.participantNo
-                )}
-              </td>
+
               <td>
                 {editIndex === index ? (
                   <>

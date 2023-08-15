@@ -31,17 +31,13 @@ const Home = () => {
   //generate id
   function generateProductId(currentId) {
     const paddedId = String(currentId).padStart(3, "0");
+    setCurrentId(currentId + 1);
     return `p-${paddedId}`;
   }
-  const handleGenerateId = () => {
-    const newId = generateProductId(currentId);
-    setCurrentId(currentId + 1);
-    return newId;
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const participantId = handleGenerateId();
+    const participantId = generateProductId(currentId);
 
     // Do something with the form data, e.g., send it to a server or perform validation
     const data = {
@@ -56,10 +52,7 @@ const Home = () => {
 
     // Clear the form fields
 
-    setParticipantName("");
-    setParticipantNo("");
-    setParticipateAt("");
-    setScore("");
+    e.target.reset();
   };
   return (
     <>
