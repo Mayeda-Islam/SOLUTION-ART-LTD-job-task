@@ -4,22 +4,29 @@ import React, { useState } from "react";
 // eslint-disable-next-line react/prop-types
 const PlayerCard = ({
   score,
-  setError,
-  error,
+
   editIndex,
   allPlayer,
   handleUpdate,
   handleDelete,
   setEditIndex,
 }) => {
-  const [filterByParticipateAt, setFilterByParticipateAt] = useState([]);
+  const [filterByParticipateAt, setFilterByParticipateAt] = useState("");
+  const [error, setError] = useState("");
   console.log(filterByParticipateAt);
   const [updatedPlayer, setUpdatedPlayer] = useState({});
   const handleEdit = (index, player) => {
     setEditIndex(index);
     setUpdatedPlayer(player);
   };
-
+  const handleValidateAndUpdate = () => {
+    setError("");
+    if (updatedPlayer?.score < 0 || updatedPlayer?.score > 10) {
+      setError("Please enter a number between 0 and 10.");
+      return;
+    }
+    handleUpdate(updatedPlayer);
+  };
   let filterData = [];
   if (filterByParticipateAt && allPlayer?.length) {
     filterData = allPlayer?.filter(
@@ -141,7 +148,7 @@ const PlayerCard = ({
               <td>
                 {editIndex === index ? (
                   <>
-                    <button onClick={() => handleUpdate(updatedPlayer)}>
+                    <button onClick={() => handleValidateAndUpdate()}>
                       update
                     </button>
                   </>
