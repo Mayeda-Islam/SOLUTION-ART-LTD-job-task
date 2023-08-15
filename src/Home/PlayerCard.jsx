@@ -3,21 +3,48 @@ import React, { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
 const PlayerCard = ({
+  score,
+  setError,
+  error,
   editIndex,
   allPlayer,
   handleUpdate,
   handleDelete,
   setEditIndex,
 }) => {
+  const [filterByParticipateAt, setFilterByParticipateAt] = useState([]);
+  console.log(filterByParticipateAt);
   const [updatedPlayer, setUpdatedPlayer] = useState({});
   const handleEdit = (index, player) => {
     setEditIndex(index);
     setUpdatedPlayer(player);
   };
+
+  let filterData = [];
+  if (filterByParticipateAt && allPlayer?.length) {
+    filterData = allPlayer?.filter(
+      (player) =>
+        filterByParticipateAt === "" ||
+        player.participantNo === filterByParticipateAt
+    );
+    console.log(filterData);
+  } else {
+    filterData = allPlayer;
+  }
+  console.log(filterData);
   return (
     <div>
       <h2>allPlayer Table</h2>
-
+      <div>
+        Filter by participateAt:
+        <select onChange={(e) => setFilterByParticipateAt(e.target.value)}>
+          <option value="">Select an activity</option>
+          <option value="cricket">Cricket</option>
+          <option value="football">Football</option>
+          <option value="racing car">Racing Car</option>
+          <option value="bike racing">Bike Racing</option>
+        </select>
+      </div>
       <table>
         <thead>
           <tr>
@@ -30,7 +57,7 @@ const PlayerCard = ({
           </tr>
         </thead>
         <tbody>
-          {allPlayer?.map((player, index) => (
+          {filterData?.map((player, index) => (
             <tr key={index}>
               <td>{player?.participantId}</td>
               <td>
@@ -47,18 +74,18 @@ const PlayerCard = ({
                     required
                   />
                 ) : (
-                  player.participantName
+                  player?.participantName
                 )}
               </td>
 
               <td>
                 {editIndex === index ? (
                   <select
-                    value={updatedPlayer?.participateNo}
+                    value={updatedPlayer?.participateAt}
                     onChange={(e) =>
                       setUpdatedPlayer({
                         ...updatedPlayer,
-                        participateNo: e.target.value,
+                        participateAt: e.target.value,
                       })
                     }
                   >
@@ -69,7 +96,7 @@ const PlayerCard = ({
                     <option value="bike racing">Bike Racing</option>
                   </select>
                 ) : (
-                  player.participateAt
+                  player?.participateAt
                 )}
               </td>
               <td>
@@ -85,23 +112,28 @@ const PlayerCard = ({
                     }
                   />
                 ) : (
-                  player?.participantAt
+                  player?.participantNo
                 )}
               </td>
               <td>
                 {editIndex === index ? (
-                  <input
-                    type="number"
-                    min="0"
-                    max="10"
-                    value={updatedPlayer?.score}
-                    onChange={(e) =>
-                      setUpdatedPlayer({
-                        ...updatedPlayer,
-                        score: e.target.value,
-                      })
-                    }
-                  />
+                  <>
+                    {" "}
+                    <input
+                      type="number"
+                      min="0"
+                      max="10"
+                      value={updatedPlayer?.score}
+                      onChange={(e) =>
+                        setUpdatedPlayer({
+                          ...updatedPlayer,
+                          score: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                    {error && <p style={{ color: "red" }}>{error}</p>}
+                  </>
                 ) : (
                   player.score
                 )}

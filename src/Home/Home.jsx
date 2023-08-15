@@ -12,19 +12,15 @@ const Home = () => {
   const [allPlayer, setAllPlayer] = useState([]);
 
   const handleUpdate = (updatedPlayer) => {
-    console.log(updatedPlayer);
+    if (updatedPlayer?.score < 0 || updatedPlayer?.score > 10) {
+      setError("Please enter a number between 0 and 10.");
+    } else {
+      setError("");
+    }
     const updatedIndex = allPlayer?.findIndex(
       (player) => player?.participantId === updatedPlayer?.participantId
     );
     if (updatedIndex !== -1) {
-      // const updatedPlayer = allPlayer[updatedIndex];
-      //updated player data added
-      // (updatedPlayer.participantName = updatedPlayer?.participantName),
-      //   (updatedPlayer.participateAt = "fgfh"),
-      //   (updatedPlayer.score = 3),
-      //   (updatedPlayer.participantNo = "sgdfhgfgh");
-      // console.log(updatedPlayer);
-      //updated data replace
       const updatedPlayers = [...allPlayer];
       updatedPlayers[updatedIndex] = updatedPlayer;
       setAllPlayer(updatedPlayers);
@@ -52,6 +48,11 @@ const Home = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const participantId = handleGenerateId();
+    if (score < 0 || score > 10) {
+      setError("Please enter a number between 0 and 10.");
+    } else {
+      setError("");
+    }
     // Do something with the form data, e.g., send it to a server or perform validation
     const data = {
       participantId,
@@ -70,7 +71,6 @@ const Home = () => {
     setParticipateAt("");
     setScore("");
   };
-  console.log(allPlayer, "line 35");
   return (
     <>
       <div>
@@ -131,6 +131,10 @@ const Home = () => {
         </form>
       </div>
       <PlayerCard
+        // setFilterByParticipateAt={setFilterByParticipateAt}
+        score={score}
+        error={error}
+        setError={setError}
         setParticipantName={setParticipantName}
         editIndex={editIndex}
         setEditIndex={setEditIndex}
